@@ -1,7 +1,7 @@
 ---
-title: "About"
-meta_title: "About"
-image: "/src/assets/images/avatar-placeholder.svg"
+title: "Chi Sono"
+meta_title: "Chi Sono"
+image: "/src/assets/images/ema.webp"
 draft: false
 
 what_i_do:

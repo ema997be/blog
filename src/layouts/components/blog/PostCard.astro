@@ -14,9 +14,18 @@ const slug = post.data.canonical
 
 // Check if post is part of a series
 const isPartOfSeries = series && Array.isArray(series) && series.length === 2;
+
+import readingTime from 'reading-time';
+import config from '../../../config/config.json';  // aggiorna il path se necessario
+
+// `content` è il raw markdown; cambia il nome della variabile 
+// a seconda di come il tema espone il corpo dei post
+const stats = readingTime(post.body);
+const readingTimeText = stats.text.replace('min read', 'min di lettura');
+const showRT = config.settings?.showreadingtime;
 ---
 
-<article class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-400 hover:transform hover:scale-[1.02]" >
+<article class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-400 hover:transform hover:scale-[1.02] h-full flex flex-col">
   <!-- Post Image -->
   {image && (
     <a href={`/${slug}/`} class="block overflow-hidden aspect-video">
@@ -30,7 +39,7 @@ const isPartOfSeries = series && Array.isArray(series) && series.length === 2;
     </a>
   )}
   
-  <div class="p-5">
+  <div class="p-5 flex flex-col h-full">
     <div class="flex flex-wrap gap-2 mb-2 items-center justify-between">
       <!-- Categories -->
       {categories && categories.length > 0 && (
@@ -65,21 +74,12 @@ const isPartOfSeries = series && Array.isArray(series) && series.length === 2;
     
     <!-- Description -->
     {description && (
-      <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+      <p class="text-gray-600 dark:text-gray-300 line-clamp-3 mb-0">
         {description}
       </p>
     )}
-    
-    <div class="flex items-center justify-between mt-4 text-sm text-gray-500 dark:text-gray-400">
-      <!-- Author -->
-      {authors && authors.length > 0 && (
-        <div class="flex items-center">
-          <Icon name="mdi:account" class="w-4 h-4 mr-1" />
-          <span>{authors[0]}</span>
-        </div>
-      )}
-      
-      <!-- Date -->
+
+    <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-auto">
       {date && (
         <div class="flex items-center">
           <Icon name="mdi:calendar" class="w-4 h-4 mr-1" />
@@ -87,6 +87,12 @@ const isPartOfSeries = series && Array.isArray(series) && series.length === 2;
             {formatDate(date)}
           </time>
         </div>
+      )}
+      {showRT && (
+        <span class="reading-time flex items-center">
+          <Icon name="mdi:clock-outline" class="w-4 h-4 mr-1" />
+          {readingTimeText}
+        </span>
       )}
     </div>
   </div>

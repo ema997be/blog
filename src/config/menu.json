@@ -5,7 +5,7 @@
       "url": "/"
     },
     {
-      "name": "About",
+      "name": "Chi Sono",
       "url": "/about/"
     },
     {
@@ -29,14 +29,6 @@
         {
           "name": "Tags",
           "url": "/tags/"
-        },
-        {
-          "name": "About",
-          "url": "/about/"
-        },
-        {
-          "name": "Privacy Policy",
-          "url": "/privacy/"
         }
       ]
     },
@@ -48,11 +40,11 @@
   ],
   "footer": [
     {
-      "name": "About",
+      "name": "Chi Sono",
       "url": "/about/"
     },
     {
-      "name": "Contact",
+      "name": "Contatti",
       "url": "/contact/"
     },
     {

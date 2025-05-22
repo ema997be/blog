@@ -9,17 +9,20 @@ import SocialShare from '@layouts/components/blog/SocialShare.astro';
 import SeriesNav from '@layouts/components/widgets/SeriesNav.astro';
 import ReadingProgress from '@layouts/components/blog/ReadingProgress.astro';
 import Breadcrumb from '@layouts/components/common/Breadcrumb.astro';
+import readingTime from 'reading-time';
 
 const { post, headings } = Astro.props;
 const { title, description, image, date, categories, authors, tags } = post.data;
+
+// Calcola il tempo di lettura (assicurati che post.body sia il markdown del post)
+const stats = readingTime(post.body);
+const readingTimeText = stats.text.replace('min read', 'min di lettura');
 
 // Get the canonical URL for this post
 // Make sure we have a valid site URL to avoid the TypeError: Invalid URL error
 const canonicalURL = Astro.site 
   ? new URL(Astro.url.pathname, Astro.site).toString()
   : Astro.url.pathname;
-
-// No reading time calculation needed
 
 // Generate breadcrumbs for structured data
 const breadcrumbs = [
@@ -43,8 +46,7 @@ breadcrumbs.push({ name: title, url: canonicalURL });
   publishDate={date}
   author={authors && authors.length > 0 ? { name: authors[0] } : undefined}
   tags={tags}
-  categories={categories}
-  breadcrumbs={breadcrumbs}>
+  categories={categories}>
   <!-- Reading Progress Bar -->
 <ReadingProgress />
 
@@ -63,7 +65,11 @@ breadcrumbs.push({ name: title, url: canonicalURL });
           </time>
         </div>
         
-
+        <!-- Tempo di lettura -->
+        <div class="flex items-center">
+          <Icon name="mdi:clock-outline" class="w-5 h-5 mr-1" />
+          <span>{readingTimeText}</span>
+        </div>
         
         <!-- Categories -->
         {categories && categories.length > 0 && (
@@ -83,7 +89,7 @@ breadcrumbs.push({ name: title, url: canonicalURL });
         )}
         
         <!-- Author -->
-        {authors && authors.length > 0 && (
+        {/*authors && authors.length > 0 && (
           <div class="flex items-center">
             <Icon name="mdi:account" class="w-5 h-5 mr-1" />
             <div class="flex flex-wrap gap-2">
@@ -97,7 +103,7 @@ breadcrumbs.push({ name: title, url: canonicalURL });
               ))}
             </div>
           </div>
-        )}
+        )*/}
       </div>
       
       <!-- Title -->

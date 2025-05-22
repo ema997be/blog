@@ -1,7 +1,7 @@
 // Site configuration
 export const siteConfig = {
   // Site details from config.json:site
-  title: "Bit Doze Astro Blog Theme", // from config.json:site.title
+  title: "Dott. Emanuele Belloni - Biologo Nutrizionista, Chinesiologo", // from config.json:site.title
   // description is used from existing site.ts, will be updated by config.json:metadata.meta_description
   // url is removed, Astro.site will be used
 
@@ -12,21 +12,22 @@ export const siteConfig = {
   logoText: "Bit Doze Astro Blog Theme",
 
   // SEO metadata from config.json:metadata
-  author: "Your Name", // from config.json:metadata.meta_author
-  description: "A modern, responsive blog theme for Astro with support for tags, categories, and series.", // from config.json:metadata.meta_description
+  author: "Emanuele Belloni", // from config.json:metadata.meta_author
+  description:
+    "Guide integrate di nutrizione e allenamento per uomini e donne over 40: perdi peso, ritrova energia e vitalità in modo sostenibile.", // from config.json:metadata.meta_description
   ogImage: "/images/og-image.png", // from config.json:metadata.meta_image (replaces defaultImage)
 
   // Pagination settings from config.json:settings
-  postsPerPage: 11, // from config.json:settings.pagination
-  summaryLength: 100, // from config.json:settings.summary_length
-  
+  postsPerPage: 8, // from config.json:settings.pagination
+  summaryLength: 140, // from config.json:settings.summary_length
+
   // SEO settings (existing in site.ts)
   noindex: {
     tags: true, // Set to true to add noindex meta tag to tag pages
     categories: false, // Set to true to add noindex meta tag to category pages
     authors: false, // Set to true to add noindex meta tag to author pages
   },
-  
+
   // Params from config.json:params
   copyright: "Copyright © 2025", // from config.json:params.copyright
 };
