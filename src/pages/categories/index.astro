@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import { Icon } from 'astro-icon/components';
+import Breadcrumb from '@components/common/Breadcrumb.astro';
 import { siteConfig } from '@config/site';
 
 // Get all blog posts
@@ -22,6 +23,11 @@ const categoryCounts = categories.map(category => {
     slug: category.toLowerCase()
   };
 }).sort((a, b) => b.count - a.count); // Sort by post count (descending)
+
+const crumbs = [
+  { name: 'Blog', url: '/blog/' },
+  { name: 'Categorie', url: '/categories/' }
+];
 ---
 
 <Layout 
@@ -29,6 +35,7 @@ const categoryCounts = categories.map(category => {
   description="Browse all categories of posts on our blog"
 >
   <div class="w-full py-8">
+    <Breadcrumb items={crumbs} />
     <header class="mb-10">
       <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
         Categories

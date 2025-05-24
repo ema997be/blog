@@ -18,7 +18,7 @@ export const siteConfig = {
   ogImage: "/images/og-image.png", // from config.json:metadata.meta_image (replaces defaultImage)
 
   // Pagination settings from config.json:settings
-  postsPerPage: 8, // from config.json:settings.pagination
+  postsPerPage: 6, // from config.json:settings.pagination
   summaryLength: 140, // from config.json:settings.summary_length
 
   // SEO settings (existing in site.ts)
@@ -28,6 +28,6 @@ export const siteConfig = {
     authors: false, // Set to true to add noindex meta tag to author pages
   },
 
-  // Params from config.json:params
-  copyright: "Copyright © 2025", // from config.json:params.copyright
+  // Copyright
+  copyright: `Copyright © ${new Date().getFullYear()} Dott. Emanuele Belloni`,
 };

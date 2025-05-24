@@ -27,8 +27,8 @@ const { Content, headings } = await post.render();
 
 // Make all components available to MDX content
 const components = MarkdownComponents;
----
 
+---
 <PostLayout post={post} headings={headings}>
   <Content components={components} />
 </PostLayout>

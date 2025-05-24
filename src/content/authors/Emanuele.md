@@ -1,5 +1,5 @@
 ---
-title: dragos
+title: Emanuele
 image: "/images/authors/dragos.webp"
 description: Emanuele, l'autore del sito web
 social:
