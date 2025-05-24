@@ -1,0 +1,156 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@layouts/Layout.astro';
+// PostCard might not be the ideal component, will use a custom list item structure
+// import PostCard from '@components/blog/PostCard.astro'; 
+import Pagination from '@components/common/Pagination.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import { getPagination } from '@utils/pagination';
+import { siteConfig } from '@config/site';
+import { slugify } from '@utils/slugify';
+import { Icon } from 'astro-icon/components';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => {
+    return !data.draft && data.series && Array.isArray(data.series) && data.series.length > 0;
+  });
+
+  const seriesMap = new Map<string, any[]>();
+
+  posts.forEach(post => {
+    const seriesName = post.data.series![0];
+    if (seriesName) {
+      if (!seriesMap.has(seriesName)) {
+        seriesMap.set(seriesName, []);
+      }
+      seriesMap.get(seriesName)!.push(post);
+    }
+  });
+
+  const paths = [];
+
+  for (const [seriesName, seriesPosts] of seriesMap.entries()) {
+    const sortedPosts = seriesPosts.sort((a, b) => {
+      const posA = a.data.series![1] ?? Infinity;
+      const posB = b.data.series![1] ?? Infinity;
+      if (posA !== posB) {
+        return posA - posB;
+      }
+      return new Date(b.data.date || 0).getTime() - new Date(a.data.date || 0).getTime();
+    });
+
+    const totalPages = Math.ceil(sortedPosts.length / siteConfig.postsPerPage);
+    const seriesSlug = slugify(seriesName);
+
+    for (let i = 2; i <= totalPages; i++) { // Start from page 2
+      paths.push({
+        params: { series: seriesSlug, page: i.toString() },
+        props: {
+          seriesName,
+          posts: sortedPosts, // Pass all posts for the series
+          page: i,
+          count: sortedPosts.length,
+        },
+      });
+    }
+  }
+  return paths;
+}
+
+const { seriesName, posts, page, count } = Astro.props;
+const currentPage = parseInt(page);
+const seriesSlug = slugify(seriesName);
+const basePath = `/series/${seriesSlug}`;
+
+// Get pagination data for the current page
+const { 
+  startIndex, 
+  endIndex, 
+  prevUrl, 
+  nextUrl, 
+  totalPages 
+} = getPagination({
+  page: currentPage,
+  totalPosts: count,
+  basePath,
+  postsPerPage: siteConfig.postsPerPage,
+});
+
+// Get posts for the current page
+const paginatedPosts = posts.slice(startIndex, endIndex);
+
+// Set noindex based on site config for series pagination
+// Assuming a config like siteConfig.series.noindexPaginated or similar
+// For now, defaulting to siteConfig.series.noindex or false
+const noindex = siteConfig.series?.noindexPaginated ?? siteConfig.series?.noindex ?? false;
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Series', url: '/series/' },
+  { name: seriesName, url: `/series/${seriesSlug}/` },
+  { name: `Page ${currentPage}`, url: `${basePath}/page/${currentPage}/` }
+];
+---
+
+<Layout
+  title={`${seriesName} - Page ${currentPage} - Series | ${siteConfig.title}`}
+  description={`Articles in the series: ${seriesName} - Page ${currentPage}`}
+  noindex={noindex}
+>
+  <div class="w-full py-8">
+    <Breadcrumb links={breadcrumbs} />
+    <header class="mb-10 mt-4">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+        {seriesName}
+        <span class="text-2xl md:text-3xl text-gray-600 dark:text-gray-400"> (Page {currentPage})</span>
+      </h1>
+      <p class="text-lg text-gray-700 dark:text-gray-300">
+        Displaying articles {startIndex + 1} - {Math.min(endIndex, count)} of {count} in this series.
+      </p>
+    </header>
+
+    {paginatedPosts.length > 0 ? (
+      <div class="space-y-6">
+        {paginatedPosts.map((post) => (
+          <article class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700">
+            <a href={`/blog/${post.slug}/`} class="group">
+              <h2 class="text-2xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-2">
+                {post.data.title}
+              </h2>
+            </a>
+            <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
+              <Icon name="mdi:calendar-outline" class="w-4 h-4 mr-1.5" />
+              <span>{new Date(post.data.date).toLocaleDateString(siteConfig.date.locale, siteConfig.date.options)}</span>
+              <span class="mx-2">|</span>
+              <Icon name="mdi:list-ol" class="w-4 h-4 mr-1.5" />
+              <span>Part {post.data.series![1]}</span>
+            </div>
+            {post.data.excerpt && (
+              <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                {post.data.excerpt}
+              </p>
+            )}
+            <a href={`/blog/${post.slug}/`} class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline">
+              Read article
+              <Icon name="mdi:arrow-right" class="w-4 h-4 ml-1" />
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        {/* This case should ideally not be reached if getStaticPaths is correct */}
+        <Icon name="mdi:alert-circle-outline" class="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+        <p class="text-xl text-gray-600 dark:text-gray-400">No articles found for this page.</p>
+      </div>
+    )}
+
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      prevUrl={prevUrl}
+      nextUrl={nextUrl}
+      basePath={basePath}
+    />
+  </div>
+</Layout>

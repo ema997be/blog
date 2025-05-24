@@ -1,0 +1,138 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@layouts/Layout.astro';
+import PostCard from '@components/blog/PostCard.astro'; // Re-evaluate if PostCard is best fit
+import Pagination from '@components/common/Pagination.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import { getPagination } from '@utils/pagination';
+import { siteConfig } from '@config/site';
+import { slugify } from '@utils/slugify';
+import { Icon } from 'astro-icon/components';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => {
+    return !data.draft && data.series && Array.isArray(data.series) && data.series.length > 0;
+  });
+
+  const seriesMap = new Map<string, any[]>();
+
+  posts.forEach(post => {
+    const seriesName = post.data.series![0];
+    if (seriesName) {
+      if (!seriesMap.has(seriesName)) {
+        seriesMap.set(seriesName, []);
+      }
+      seriesMap.get(seriesName)!.push(post);
+    }
+  });
+
+  return Array.from(seriesMap.entries()).map(([seriesName, seriesPosts]) => {
+    const sortedPosts = seriesPosts.sort((a, b) => {
+      const posA = a.data.series![1] ?? Infinity;
+      const posB = b.data.series![1] ?? Infinity;
+      if (posA !== posB) {
+        return posA - posB;
+      }
+      return new Date(b.data.date || 0).getTime() - new Date(a.data.date || 0).getTime();
+    });
+
+    return {
+      params: { series: slugify(seriesName) },
+      props: {
+        seriesName,
+        posts: sortedPosts,
+        count: sortedPosts.length,
+      },
+    };
+  });
+}
+
+const { seriesName, posts, count } = Astro.props;
+const seriesSlug = slugify(seriesName);
+const basePath = `/series/${seriesSlug}`;
+
+// Get pagination data for the first page (index.astro is page 1)
+const { postsPerPage, totalPages, currentPage } = getPagination({
+  page: 1, // This is the first page
+  totalPosts: count,
+  basePath,
+  postsPerPage: siteConfig.postsPerPage, 
+});
+
+// Get posts for the first page
+const paginatedPosts = posts.slice(0, postsPerPage);
+
+// Set noindex based on site config for series
+const noindex = siteConfig.series?.noindex || false;
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Series', url: '/series/' },
+  { name: seriesName, url: basePath }
+];
+---
+
+<Layout
+  title={`${seriesName} - Series | ${siteConfig.title}`}
+  description={`Articles in the series: ${seriesName}`}
+  noindex={noindex}
+>
+  <div class="w-full py-8">
+    <Breadcrumb links={breadcrumbs} />
+    <header class="mb-10 mt-4">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+        {seriesName}
+      </h1>
+      <p class="text-lg text-gray-700 dark:text-gray-300">
+        {count} {count === 1 ? 'article' : 'articles'} in this series.
+      </p>
+    </header>
+
+    {count > 0 ? (
+      <div class="space-y-6">
+        {paginatedPosts.map((post, index) => (
+          <article class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700">
+            <a href={`/blog/${post.slug}/`} class="group">
+              <h2 class="text-2xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-2">
+                {post.data.title}
+              </h2>
+            </a>
+            <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
+              <Icon name="mdi:calendar-outline" class="w-4 h-4 mr-1.5" />
+              <span>{new Date(post.data.date).toLocaleDateString(siteConfig.date.locale, siteConfig.date.options)}</span>
+              <span class="mx-2">|</span>
+              <Icon name="mdi:list-ol" class="w-4 h-4 mr-1.5" />
+              <span>Part {post.data.series![1]}</span>
+            </div>
+            {post.data.excerpt && (
+              <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                {post.data.excerpt}
+              </p>
+            )}
+            <a href={`/blog/${post.slug}/`} class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline">
+              Read article
+              <Icon name="mdi:arrow-right" class="w-4 h-4 ml-1" />
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        <Icon name="mdi:package-variant-closed-remove" class="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+        <p class="text-xl text-gray-600 dark:text-gray-400">No articles found in this series.</p>
+        <p class="text-gray-500 dark:text-gray-300">This series might be new or articles are being updated.</p>
+      </div>
+    )}
+
+    {totalPages > 1 && (
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        prevUrl={currentPage > 1 ? `${basePath}${currentPage === 2 ? '' : '/page/' + (currentPage - 1)}/` : null}
+        nextUrl={currentPage < totalPages ? `${basePath}/page/${currentPage + 1}/` : null}
+        basePath={basePath}
+      />
+    )}
+  </div>
+</Layout>
+---
