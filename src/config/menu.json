@@ -5,36 +5,16 @@
       "url": "/"
     },
     {
-      "name": "Chi Sono",
+      "name": "Chi sono",
       "url": "/about/"
     },
     {
-      "name": "Series",
-      "url": "/series/"
+      "name": "Blog",
+      "url": "/blog/"
     },
 
     {
-      "name": "Pages",
-      "url": "",
-      "hasChildren": true,
-      "children": [
-        {
-          "name": "Authors",
-          "url": "/authors/"
-        },
-        {
-          "name": "Categories",
-          "url": "/categories/"
-        },
-        {
-          "name": "Tags",
-          "url": "/tags/"
-        }
-      ]
-    },
-
-    {
-      "name": "Contact",
+      "name": "Contatti",
       "url": "/contact/"
     }
   ],
