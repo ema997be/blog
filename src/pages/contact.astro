@@ -2,6 +2,7 @@
 import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import config from "@config/config.json";
+import Breadcrumb from "@components/common/Breadcrumb.astro";
 
 // Informazioni di contatto dal file di configurazione
 const title = "Contattaci";
@@ -13,6 +14,12 @@ const markdownify = (content: string) => {
   if (!content) return "";
   return content;
 };
+
+const breadcrumbs = [
+  { name: "Home", url: "/" },
+  { name: title, url: Astro.url.pathname }
+];
+
 ---
 
 <Layout
@@ -21,6 +28,7 @@ const markdownify = (content: string) => {
 >
   <section class="section py-12">
     <div class="container max-w-5xl mx-auto px-4">
+    <Breadcrumb items={breadcrumbs} />
       <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-10 text-center">{title}</h1>
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
         <div class="md:col-span-4">

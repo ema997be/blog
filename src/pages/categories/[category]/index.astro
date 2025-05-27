@@ -5,6 +5,7 @@ import PostCard from '@components/blog/PostCard.astro';
 import Pagination from '@components/common/Pagination.astro';
 import { getPagination } from '@utils/pagination';
 import { siteConfig } from '@config/site';
+import Breadcrumb from '@components/common/Breadcrumb.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => {
@@ -51,6 +52,13 @@ const noindex = siteConfig.noindex.categories;
 
 // Format the category name for display
 const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+
+const breadcrumbs = [
+  { name: "Home", url: "/" },
+  { name: "Blog", url: "/blog/" },
+  { name: "Categories", url: "/categories/" },
+  { name: formattedCategory, url: Astro.url.pathname }
+];
 ---
 
 <Layout 
@@ -58,7 +66,9 @@ const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1);
   description={`Browse all posts in the ${formattedCategory} category`}
   noindex={noindex}
 >
+
   <div class="w-full py-8">
+    <Breadcrumb items={breadcrumbs} />
     <header class="mb-10">
       <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
         Category: {formattedCategory}

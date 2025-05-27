@@ -27,9 +27,12 @@ const tagCounts = tags.map(tag => {
 }).sort((a, b) => b.count - a.count); // Sort by post count (descending)
 
 // Breadcrumbs for SEO
+// Breadcrumbs array for SEO and navigation purposes
+// Each breadcrumb contains a `name` (display text) and a `url` (link path)
 const breadcrumbs = [
-  { name: 'Blog', url: '/blog/' },
-  { name: 'Tags', url: '/tags/' }
+  { name: "Home", url: "/" },
+  { name: "Blog", url: "/blog/" },
+  { name: "Tags", url: "/tags/" }
 ];
 ---
 

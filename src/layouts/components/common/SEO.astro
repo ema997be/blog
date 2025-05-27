@@ -69,7 +69,7 @@ const modifiedISODate = modifiedDate ? new Date(modifiedDate).toISOString() : pu
 let schema = null;
 
 // Safe URL creation function
-const safeUrl = (path, base) => {
+const safeUrl = (path: string, base?: string | URL) => {
   // Astro.site should be defined as per astro.config.mjs.
   // If base is not provided, Astro.site will be used.
   const baseToUse = base ? base.toString() : (Astro.site ? Astro.site.toString() : '');

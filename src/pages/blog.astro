@@ -6,6 +6,7 @@ import Pagination from '@components/common/Pagination.astro';
 import { getPagination } from '@utils/pagination';
 import { siteConfig } from '@config/site';
 import PopularTopics from '@components/blog/PopularTopics.astro';
+import Breadcrumb from '@components/common/Breadcrumb.astro';
 
 // Get all blog posts and sort by date (newest first)
 const posts = await getCollection('posts', ({ data }) => {
@@ -26,6 +27,11 @@ const { postsPerPage } = getPagination({
 
 // Get posts for the first page
 const paginatedPosts = sortedPosts.slice(0, postsPerPage);
+
+const breadcrumbs = [
+  { name: "Home", url: "/" },
+  { name: "Blog", url: "/blog/" }
+];
 ---
 
 <Layout
@@ -33,6 +39,7 @@ const paginatedPosts = sortedPosts.slice(0, postsPerPage);
   description="Explore our latest articles, tutorials, and insights"
 >
   <main class="w-full py-8">
+    <Breadcrumb items={breadcrumbs} />
     <!-- Browse Categories Section -->
     <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
       <div class="text-center mb-8">

@@ -25,6 +25,7 @@ const categoryCounts = categories.map(category => {
 }).sort((a, b) => b.count - a.count); // Sort by post count (descending)
 
 const crumbs = [
+  { name: 'Home', url: '/' },
   { name: 'Blog', url: '/blog/' },
   { name: 'Categorie', url: '/categories/' }
 ];

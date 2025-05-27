@@ -65,10 +65,10 @@ const aboutCollection = defineCollection({
         z.object({
           title: z.string(),
           description: z.string(),
-          icon: z.string().optional()
+          icon: z.string().optional(),
         })
-      )
-    })
+      ),
+    }),
   }),
 });
 

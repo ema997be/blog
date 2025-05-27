@@ -5,6 +5,7 @@ import PostCard from '@components/blog/PostCard.astro';
 import Pagination from '@components/common/Pagination.astro';
 import { getPagination } from '@utils/pagination';
 import { siteConfig } from '@config/site';
+import Breadcrumb from '@components/common/Breadcrumb.astro';
 
 export async function getStaticPaths({ paginate }: { paginate: any }) {
   const posts = await getCollection('posts', ({ data }) => {
@@ -66,6 +67,12 @@ const noindex = siteConfig.noindex.tags;
 
 // Format the tag name for display
 const formattedTag = tag.charAt(0).toUpperCase() + tag.slice(1);
+
+const breadcrumbs = [
+  { name: "Blog", url: "/blog/" },
+  { name: "Tags", url: "/tags/" },
+  { name: formattedTag, url: Astro.url.pathname }
+];
 ---
 
 <Layout 
@@ -74,6 +81,7 @@ const formattedTag = tag.charAt(0).toUpperCase() + tag.slice(1);
   noindex={noindex}
 >
   <div class="w-full py-8">
+    <Breadcrumb items={breadcrumbs} />
     <header class="mb-10">
       <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
         Tag: #{formattedTag}
