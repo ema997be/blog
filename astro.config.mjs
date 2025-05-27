@@ -14,9 +14,6 @@ export default defineConfig({
 
   // Base path (set to '/' for most sites)
   base: "/",
-  adapter: vercel({
-    imageService: true,
-  }),
 
   // Configure Vite plugins and server settings
   vite: {
