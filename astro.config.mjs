@@ -5,6 +5,7 @@ import mdx from "@astrojs/mdx";
 import icon from "astro-icon";
 import sitemap from "@astrojs/sitemap";
 import path from "path";
+import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,6 +14,9 @@ export default defineConfig({
 
   // Base path (set to '/' for most sites)
   base: "/",
+  adapter: vercel({
+    imageService: true,
+  }),
 
   // Configure Vite plugins and server settings
   vite: {

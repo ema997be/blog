@@ -1,6 +1,7 @@
 ---
-title: "Chi Sono"
-meta_title: "Chi Sono"
+title: "About"
+meta_title: "About Me"
+description: "Questa è la pagina about"
 image: "/src/assets/images/ema.webp"
 draft: false
 
@@ -9,12 +10,15 @@ what_i_do:
   items:
     - title: "Content Creation"
       description: "High-quality content tailored to your audience."
+      icon: ""
 
     - title: "Web Development"
       description: "Modern websites built with cutting-edge technologies."
+      icon: ""
 
     - title: "Digital Marketing"
       description: "Strategic marketing solutions to grow your online presence."
+      icon: ""
 ---
 
 Welcome to our company! We are a dedicated team of professionals passionate about delivering exceptional digital solutions to businesses of all sizes. With years of experience in the industry, we've developed a deep understanding of what it takes to succeed in today's fast-paced digital landscape.
