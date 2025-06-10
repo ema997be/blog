@@ -5,7 +5,7 @@ import PostCard from '@components/blog/PostCard.astro';
 import Pagination from '@components/common/Pagination.astro';
 import { getPagination } from '@utils/pagination';
 import { siteConfig } from '@config/site';
-import Breadcrumb from '@components/common/Breadcrumb.astro';
+import PageHeader from '@layouts/components/common/PageHeader.astro';
 
 export async function getStaticPaths({ paginate }: { paginate: any }) {
   const posts = await getCollection('posts', ({ data }) => {
@@ -81,15 +81,11 @@ const breadcrumbs = [
   noindex={noindex}
 >
   <div class="w-full py-8">
-    <Breadcrumb items={breadcrumbs} />
-    <header class="mb-10">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-        Tag: #{formattedTag}
-      </h1>
-      <p class="text-lg text-gray-700 dark:text-gray-300">
-        Page {currentPage} of {totalPages} - {count} {count === 1 ? 'post' : 'posts'} with this tag
-      </p>
-    </header>
+    <PageHeader 
+      title={`Tag: #${formattedTag}`}
+      description={`Page ${currentPage} of ${totalPages} - ${count} ${count === 1 ? 'post' : 'posts'} with this tag`}
+      breadcrumbs={breadcrumbs}
+    />
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {paginatedPosts.map((post) => (

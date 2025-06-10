@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import { Icon } from 'astro-icon/components';
-import Breadcrumb from '@layouts/components/common/Breadcrumb.astro';
+import PageHeader from '@layouts/components/common/PageHeader.astro';
 import { siteConfig } from '@config/site'; // Import siteConfig
 
 // Get all posts
@@ -77,17 +77,11 @@ const breadcrumbs = [
   description="Browse our collection of article series on various topics"
 >
   <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
-    <!-- Breadcrumb Navigation -->
-    <Breadcrumb items={breadcrumbs} className="mb-6" />
-    
-    <header class="mb-12">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-        Article Series
-      </h1>
-      <p class="text-lg text-gray-700 dark:text-gray-300">
-        Browse our collection of multi-part article series on various topics
-      </p>
-    </header>
+    <PageHeader 
+      title="Article Series"
+      description="Browse our collection of multi-part article series on various topics"
+      breadcrumbs={breadcrumbs}
+    />
 
     {seriesList.length === 0 ? (
       <div class="text-center py-12">

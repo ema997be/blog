@@ -3,9 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import { Icon } from 'astro-icon/components';
 import { siteConfig } from '@config/site';
-import Breadcrumb from '@components/common/Breadcrumb.astro';
-// Update the path below to the correct relative path if Breadcrumb.astro exists elsewhere
-// import Breadcrumb from '../../components/Breadcrumb.astro';
+import PageHeader from '@layouts/components/common/PageHeader.astro';
 
 // Get all blog posts
 const posts = await getCollection('posts', ({ data }) => {
@@ -41,15 +39,11 @@ const breadcrumbs = [
   description="Browse all tags and topics on our blog"
 >
   <div class="w-full py-8">
-    <Breadcrumb items={breadcrumbs} />
-    <header class="mb-10">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-        Tags
-      </h1>
-      <p class="text-lg text-gray-700 dark:text-gray-300">
-        Browse posts by tag
-      </p>
-    </header>
+    <PageHeader 
+      title="Tags"
+      description="Browse posts by tag"
+      breadcrumbs={breadcrumbs}
+    />
     
     <div class="flex flex-wrap gap-3">
       {tagCounts.map(({ name, count, slug }) => (

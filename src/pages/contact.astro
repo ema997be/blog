@@ -2,7 +2,7 @@
 import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import config from "@config/config.json";
-import Breadcrumb from "@components/common/Breadcrumb.astro";
+import PageHeader from "@layouts/components/common/PageHeader.astro";
 
 // Informazioni di contatto dal file di configurazione
 const title = "Contattaci";
@@ -28,8 +28,11 @@ const breadcrumbs = [
 >
   <section class="section py-12">
     <div class="container max-w-5xl m-auto px-4">
-        <Breadcrumb items={breadcrumbs} />
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-10 text-center">{title}</h1>
+      <PageHeader 
+        title={title}
+        description="Inviaci un messaggio o contattaci direttamente"
+        breadcrumbs={breadcrumbs}
+      />
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
         <div class="md:col-span-4">
           <p class="mb-8 text-2xl font-bold text-gray-900 dark:text-white">Info Contatto</p>

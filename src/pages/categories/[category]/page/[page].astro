@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import PostCard from '@components/blog/PostCard.astro';
 import Pagination from '@components/common/Pagination.astro';
-import Breadcrumb from '@components/common/Breadcrumb.astro';  // Aggiungi questo import
+import PageHeader from '@layouts/components/common/PageHeader.astro';
 import { getPagination } from '@utils/pagination';
 import { siteConfig } from '@config/site';
 
@@ -83,17 +83,11 @@ const breadcrumbs = [
   noindex={noindex}
 >
   <div class="w-full py-8">
-    <!-- Aggiungi il Breadcrumb qui -->
-    <Breadcrumb items={breadcrumbs} />
-    
-    <header class="mb-10">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-        Category: {formattedCategory}
-      </h1>
-      <p class="text-lg text-gray-700 dark:text-gray-300">
-        Page {currentPage} of {totalPages} - {count} {count === 1 ? 'post' : 'posts'} in this category
-      </p>
-    </header>
+    <PageHeader 
+      title={`Category: ${formattedCategory}`}
+      description={`Page ${currentPage} of ${totalPages} - ${count} ${count === 1 ? 'post' : 'posts'} in this category`}
+      breadcrumbs={breadcrumbs}
+    />
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {paginatedPosts.map((post) => (

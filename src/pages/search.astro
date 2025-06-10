@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Layout from '@layouts/Layout.astro';
 import { siteConfig } from '@config/site'; // Import siteConfig
-import Breadcrumb from '@components/common/Breadcrumb.astro';
+import PageHeader from '@layouts/components/common/PageHeader.astro';
 
 const breadcrumbs = [
   { name: "Home", url: "/" },
@@ -12,8 +12,11 @@ const breadcrumbs = [
 
 <Layout title={`Search - ${siteConfig.title}`} description={`Search for articles and tutorials on ${siteConfig.title}`} noindex={true}>
   <div class="max-w-4xl mx-auto px-4 py-8">
-    <Breadcrumb items={breadcrumbs} />
-    <h1 class="text-3xl font-bold mb-8 text-center">Search</h1>
+    <PageHeader 
+      title="Search"
+      description={`Search for articles and tutorials on ${siteConfig.title}`}
+      breadcrumbs={breadcrumbs}
+    />
     
     <div class="mb-8">
       <div class="relative">
