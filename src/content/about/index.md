@@ -2,7 +2,7 @@
 title: "About"
 meta_title: "About Me"
 description: "Questa è la pagina about"
-image: "/src/assets/images/mobile-development.svg"
+image: "../../assets/images/mobile-development.svg"
 draft: false
 
 what_i_do:
