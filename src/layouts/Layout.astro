@@ -60,9 +60,10 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href={`${config.site.favicon}?v=${Date.now()}`} /> {/* Added version parameter to bypass cache */}
-    {/* Removed hardcoded favicon.ico to prevent overriding the SVG favicon */}
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" /> {/* Added apple-touch-icon */}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
    
     <meta name="generator" content={Astro.generator} />
     
