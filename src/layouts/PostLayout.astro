@@ -25,12 +25,23 @@ const canonicalURL = Astro.site
   : Astro.url.pathname;
 
 // Generate breadcrumbs for structured data
+// Check if user came from a specific tag or category via URL params
+const urlParams = new URLSearchParams(Astro.url.search);
+const fromTag = urlParams.get('from-tag');
+const fromCategory = urlParams.get('from-category');
+
 const breadcrumbs = [
   { name: 'Home', url: '/' },
   { name: 'Blog', url: '/blog/' }
 ];
 
-if (categories && categories.length > 0) {
+// Add specific breadcrumb based on referrer
+if (fromTag) {
+  breadcrumbs.push({ name: fromTag, url: `/tags/${fromTag.toLowerCase()}/` });
+} else if (fromCategory) {
+  breadcrumbs.push({ name: fromCategory, url: `/categories/${fromCategory.toLowerCase()}/` });
+} else if (categories && categories.length > 0) {
+  // Default to first category if no specific referrer
   breadcrumbs.push({ name: categories[0], url: `/categories/${categories[0].toLowerCase()}/` });
 }
 

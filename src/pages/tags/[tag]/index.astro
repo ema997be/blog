@@ -75,9 +75,9 @@ const breadcrumbs = [
     
     {count > 0 ? (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {paginatedPosts.map((post) => (
-          <PostCard post={post} />
-        ))}
+      {paginatedPosts.map((post) => (
+        <PostCard post={post} fromTag={tag} />
+      ))}
       </div>
     ) : (
       <div class="text-center py-12">
