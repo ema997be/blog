@@ -3,16 +3,20 @@ import Layout from "@layouts/Layout.astro";
 import { getEntry } from "astro:content";
 import PageHeader from "@layouts/components/common/PageHeader.astro";
 import { Image } from "astro:assets";
+import mobileDevImage from "../assets/images/mobile-development.svg";
 
 const entry = await getEntry("about", "index");
 let Content, title, description, meta_title, image, what_i_do;
 
 if (entry) {
   ({ Content } = await entry.render());
-  ({ title, description, meta_title, image, what_i_do } = entry.data);
+  ({ title, description, meta_title, what_i_do } = entry.data);
+  // Use imported image instead of string path
+  image = mobileDevImage;
 } else {
   Content = () => null;
-  title = description = meta_title = image = "";
+  title = description = meta_title = "";
+  image = mobileDevImage;
   what_i_do = { title: "", items: [] };
 }
 
