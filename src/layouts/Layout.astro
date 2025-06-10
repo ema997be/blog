@@ -5,6 +5,7 @@ import Footer from "@components/common/Footer.astro";
 import SEO from "@components/common/SEO.astro";
 // import faviconSVG from "@assets/favicons/favicon.svg"; // Removed import
 import { siteConfig } from '@config/site';
+import config from '@config/config.json';
 // Import favicon from public directory instead of assets
 
 interface Props {
@@ -59,8 +60,8 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> {/* Updated path */}
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href={`${config.site.favicon}?v=${Date.now()}`} /> {/* Added version parameter to bypass cache */}
+    {/* Removed hardcoded favicon.ico to prevent overriding the SVG favicon */}
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" /> {/* Added apple-touch-icon */}
    
     <meta name="generator" content={Astro.generator} />

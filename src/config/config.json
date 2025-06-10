@@ -1,7 +1,7 @@
 {
   "site": {
     "trailing_slash": false,
-    "favicon": "/favicon2.ico"
+    "favicon": "/favicon.svg"
   },
 
   "settings": {
